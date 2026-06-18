@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  fastapi-server:
+    build: 
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: fraud_detection_api
+    ports:
+      - "8000:8000"
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow-server:5000
+    depends_on:
+      - mlflow-server
+
+  mlflow-server:
+    image: python:3.10-slim
+    container_name: mlflow_tracking_server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ../mlflow.db:/app/mlflow.db
+      - ../mlartifacts:/app/mlartifacts
+    working_dir: /app
+    command: >
+      bash -c "pip install mlflow && 
+      mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./mlartifacts --host 0.0.0.0 --port 5000"

@@ -1,0 +1,98 @@
+# ============================================================
+# MLOps Term Project - Configuration
+# Credit Card Fraud Detection with MLflow
+# ============================================================
+
+project:
+  name: "fraud-detection"
+  author: "Student"
+  description: "Credit Card Fraud Detection using MLflow lifecycle management"
+
+data:
+  raw_path: "data/raw/creditcard.csv"
+  processed_dir: "data/processed"
+  test_size: 0.15
+  val_size: 0.15
+  random_state: 42
+
+mlflow:
+  tracking_uri: "sqlite:///mlflow.db"
+  experiment_name: "fraud-detection"
+  artifact_location: "mlartifacts"
+  registry_model_name: "FraudDetector"
+
+models:
+  logistic_regression:
+    C: 1.0
+    max_iter: 1000
+    class_weight: "balanced"
+    solver: "lbfgs"
+
+  random_forest:
+    n_estimators: 200
+    max_depth: 10
+    min_samples_split: 5
+    class_weight: "balanced"
+    random_state: 42
+    n_jobs: -1
+
+  xgboost:
+    n_estimators: 200
+    max_depth: 6
+    learning_rate: 0.1
+    subsample: 0.8
+    colsample_bytree: 0.8
+    scale_pos_weight: 580
+    random_state: 42
+    eval_metric: "aucpr"
+    use_label_encoder: false
+    device: "cuda"  # GPU acceleration (RTX 3060)
+
+  lightgbm:
+    n_estimators: 300
+    max_depth: 8
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    scale_pos_weight: 580
+    random_state: 42
+    num_leaves: 31
+    min_child_samples: 20
+    n_jobs: -1
+
+  catboost:
+    iterations: 300
+    depth: 8
+    learning_rate: 0.05
+    random_seed: 42
+    auto_class_weights: "Balanced"
+    verbose: 0
+    task_type: "GPU"  # GPU acceleration (RTX 3060)
+
+  mlp_neural_network:
+    hidden_layers: [128, 64, 32]
+    max_iter: 300
+    learning_rate_init: 0.001
+    random_state: 42
+    early_stopping: true
+
+tuning:
+  n_trials: 50
+  metric: "f1"
+  direction: "maximize"
+  search_space:
+    max_depth: [3, 10]
+    n_estimators: [100, 500]
+    learning_rate: [0.01, 0.3]
+    subsample: [0.6, 1.0]
+    colsample_bytree: [0.6, 1.0]
+    min_child_weight: [1, 10]
+    scale_pos_weight: [100, 700]
+
+monitoring:
+  n_batches: 5
+  drift_threshold: 0.3
+
+serving:
+  host: "0.0.0.0"
+  port: 8000
