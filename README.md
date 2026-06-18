@@ -301,7 +301,7 @@ By automating the MLOps lifecycle—from tracking to drift mitigation—the syst
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/fraud-detection-mlops.git
+git clone https://github.com/msbztio2/fraud-detection-mlops.git
 cd fraud-detection-mlops
 ```
 
@@ -420,7 +420,7 @@ flowchart LR
 
 ## Contributors
 
-* **Lead ML Engineer:** [Your Name] 
+* **Lead ML Engineer:** MOURAD SLEEM 
 
 ---
 
